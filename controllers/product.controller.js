@@ -1,4 +1,5 @@
 const Product = require('../models/product.model');
+const sequelize = require("sequelize");
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
@@ -6,26 +7,25 @@ exports.test = function (req, res) {
 };
 
 exports.product_create = function (req, res) {
-    let product = new Product(
-        {
-            name: req.body.name,
-            price: req.body.price
-        }
-    );
+    Product.ProductSchema.create({
+      name: req.body.name,
+      price: req.body.price
+  });
+  res.send('Product Created successfully')
+};
 
-    product.save(function (err) {
-        if (err) {
-            return next(err);
-        }
-        res.send('Product Created successfully')
-    })
+exports.all_product_details = function (req, res) {
+    Product.ProductSchema.findAll({
+      order: sequelize.literal("createdAt DESC")
+    }).then(products => {
+      return res.send({products: products});
+    });
 };
 
 exports.product_details = function (req, res) {
-    Product.findById(req.params.id, function (err, product) {
-        if (err) return next(err);
-        res.send(product);
-    })
+    Product.ProductSchema.findById(req.params.id).then(product => {
+      res.send(product);
+    });
 };
 
 exports.product_update = function (req, res) {
