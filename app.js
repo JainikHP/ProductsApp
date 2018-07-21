@@ -8,7 +8,6 @@ const sequelize = require('sequelize');
 const product = require('./routes/product.route'); // Imports routes for the products
 const app = express();
 
-//app.engine('pug', require('pug').__express)
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
@@ -18,7 +17,7 @@ app.set("view engine", "pug");
 
 //app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // initialize our express app

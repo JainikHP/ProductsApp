@@ -1,7 +1,7 @@
 
 extends layout
 
-block content
+block preview
   .tg-wrap
     table.tg(style='undefined;table-layout: fixed; width: 748px')
       colgroup
@@ -33,19 +33,23 @@ block content
           span(style='font-weight:bold') GSTIN :
           |  24ACPP3597P1IN
         td.tg-cell(colspan='4')
-          span(style='font-weight:bold') Bill To Party :
+          span(style='font-weight:bold') Bill To Party : #{invoice.partyDetails.partyName}
           br
+          | #{invoice.partyDetails.partyAdrLine1}
           br
+          | #{invoice.partyDetails.partyAdrLine2}
+          br
+          | #{invoice.partyDetails.partyAdrLine3}
           br
           span(style='font-weight:bold') Invoice No. :
           br
           span(style='font-weight:bold') Invoice Date :
           br
-          span(style='font-weight:bold') GSTIN :
+          span(style='font-weight:bold') GSTIN : #{invoice.partyDetails.partyGSTIN}
           br
-          span(style='font-weight:bold') State :
+          span(style='font-weight:bold') State : #{invoice.partyDetails.partyState}
           br
-          span(style='font-weight:bold') Code :
+          span(style='font-weight:bold') Code : #{invoice.partyDetails.partyCode}
       tr
         td.tg-centerAlignedGrayCell
           span(style='font-weight:bold') Sr.
@@ -63,14 +67,15 @@ block content
           span(style='font-weight:bold') Rate
         td.tg-centerAlignedGrayCell(colspan='2')
           span(style='font-weight:bold') Amount
-      tr
-        td.tg-cell 1
-        td.tg-cell test 1 ag juduhr fjefjhrrt jjjdujhu cjdjdir sdjrhhwkhdjkf dkjdhrukhf kjshrhrfhkj
-        td.tg-cell ABC
-        td.tg-cell 5
-        td.tg-cell 20
-        td.tg-rightAlignedCell 100
-        td.tg-cell 00
+      each product in invoice.productDetails
+        tr
+          td.tg-cell
+          td.tg-cell #{product.description}
+          td.tg-cell
+          td.tg-cell #{product.qty}
+          td.tg-cell #{product.rate}
+          td.tg-rightAlignedCell
+          td.tg-cell
       tr
         td.tg-grayCell(colspan='3')
           span(style='font-weight:bold') Total invoice amount in words

@@ -6,6 +6,28 @@ exports.test = function (req, res) {
     res.send('Greetings from the Test controller!');
 };
 
+exports.preview_details = function (req, res) {
+    //console.log(Object.keys(req.body.product).length);
+    var productDetails = req.body.product;
+    var partyDetails = {
+      partyName : req.body.partyName,
+      partyAdrLine1 :req.body.partyAdrLine1,
+      partyAdrLine2 :req.body.partyAdrLine2,
+      partyAdrLine3 :req.body.partyAdrLine3,
+      partyGSTIN :req.body.partyGSTIN,
+      partyState :req.body.partyState,
+      partyCode : req.body.partyCode
+    };
+    var invoice = {
+      productDetails : productDetails,
+      partyDetails : partyDetails
+    };
+    console.log(invoice);
+    console.log({partyDetails : partyDetails});
+    return res.render("generatedTable", {invoice : invoice});
+    //res.send('Greetings from the Test controller!');
+};
+
 exports.product_create = function (req, res) {
     Product.ProductSchema.create({
       name: req.body.name,
@@ -18,7 +40,8 @@ exports.all_product_details = function (req, res) {
     Product.ProductSchema.findAll({
       order: sequelize.literal("createdAt DESC")
     }).then(products => {
-      return res.send({products: products});
+      //return res.send({products: products});
+      return res.render("inputData");
     });
 };
 
