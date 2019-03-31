@@ -12,6 +12,13 @@ const ProductSchema = db.define("product", {
   price: { type: Sequelize.DECIMAL },
 });
 
+const InvoiceSchema = db.define("invoice", {
+  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
+  partyName: { type: Sequelize.STRING },
+  invoiceHTMLData : { type: Sequelize.STRING },
+});
+
 db.sync();
 
-module.exports = { ProductSchema };
+module.exports = { ProductSchema , InvoiceSchema};
+//module.exports = { InvoiceSchema };

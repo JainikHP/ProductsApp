@@ -7,8 +7,6 @@ exports.test = function (req, res) {
 };
 
 exports.preview_details = function (req, res) {
-    //console.log(Object.keys(req.body.product).length);
-    var productDetails = req.body.product;
     var partyDetails = {
       partyName : req.body.partyName,
       partyAdrLine1 :req.body.partyAdrLine1,
@@ -19,13 +17,31 @@ exports.preview_details = function (req, res) {
       partyCode : req.body.partyCode
     };
     var invoice = {
-      productDetails : productDetails,
-      partyDetails : partyDetails
+      productDetails : req.body.product,
+      partyDetails : partyDetails,
+      cgst : req.body.cgst,
+      sgst : req.body.sgst
     };
-    console.log(invoice);
-    console.log({partyDetails : partyDetails});
-    return res.render("generatedTable", {invoice : invoice});
-    //res.send('Greetings from the Test controller!');
+    var date = new Date();
+    var fy = date.getFullYear();
+    var month = date.getMonth();
+    if (month < 3) {
+      fy = fy-1;
+    }
+    var fyStartDate = new Date (fy, 3, 0);
+    Product.InvoiceSchema.count({ where: {'createdAt': {$gt: fyStartDate}} }).then(c => {
+      console.log("There are " + c + " invoices in the current FY");
+      if (c===0) {
+        c = 1;
+      }
+      invoice.number = c;
+      invoice.date = new Date().toLocaleString();
+      return res.render("generatedTable", {invoice : invoice});
+    });
+};
+
+exports.save_details = function (req, res) {
+
 };
 
 exports.product_create = function (req, res) {

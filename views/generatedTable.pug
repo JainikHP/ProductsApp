@@ -2,6 +2,10 @@
 extends layout
 
 block preview
+  - var n = 1;
+  - var subTotal = 0;
+  - var cgst = 0;
+  - var sgst = 0;
   .tg-wrap
     table.tg(style='undefined;table-layout: fixed; width: 748px')
       colgroup
@@ -41,9 +45,9 @@ block preview
           br
           | #{invoice.partyDetails.partyAdrLine3}
           br
-          span(style='font-weight:bold') Invoice No. :
+          span(style='font-weight:bold') Invoice No. : #{invoice.number}
           br
-          span(style='font-weight:bold') Invoice Date :
+          span(style='font-weight:bold') Invoice Date : #{invoice.date}
           br
           span(style='font-weight:bold') GSTIN : #{invoice.partyDetails.partyGSTIN}
           br
@@ -68,33 +72,37 @@ block preview
         td.tg-centerAlignedGrayCell(colspan='2')
           span(style='font-weight:bold') Amount
       each product in invoice.productDetails
+        - var amount = product.qty * product.rate
+        - subTotal = subTotal + amount
         tr
-          td.tg-cell
+          td.tg-cell #{n++}
           td.tg-cell #{product.description}
-          td.tg-cell
+          td.tg-cell N/A
           td.tg-cell #{product.qty}
           td.tg-cell #{product.rate}
-          td.tg-rightAlignedCell
-          td.tg-cell
+          td.tg-rightAlignedCell #{amount}
+          td.tg-cell 00
       tr
         td.tg-grayCell(colspan='3')
           span(style='font-weight:bold') Total invoice amount in words
         td.tg-grayCell(colspan='2')
           span(style='font-weight:bold') Sub Total
-        td.tg-rightAlignedCell
-        td.tg-cell
+        td.tg-rightAlignedCell #{subTotal}
+        td.tg-cell 00
       tr
         td.tg-centerAlignedCell(colspan='3', rowspan='4')
         td.tg-grayCell
           span(style='font-weight:bold') CGST
-        td.tg-cell
-        td.tg-rightAlignedCell
+        td.tg-cell #{invoice.cgst} %
+        - cgst = (invoice.cgst * subTotal) / 100
+        td.tg-rightAlignedCell #{cgst}
         td.tg-cell
       tr
         td.tg-grayCell
           span(style='font-weight:bold') SGST
-        td.tg-cell
-        td.tg-rightAlignedCell
+        td.tg-cell #{invoice.sgst} %
+        - sgst = (invoice.sgst * subTotal) / 100
+        td.tg-rightAlignedCell #{sgst}
         td.tg-cell
       tr
         td.tg-grayCell(colspan='2')
@@ -118,3 +126,5 @@ block preview
           br
           br
           span(style='font-weight:bold') Signature
+  form(action='/products/save', method='POST')
+    input(type='submit', value='Save Invoice')

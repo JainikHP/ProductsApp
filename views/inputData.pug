@@ -15,7 +15,7 @@ block content
   |           $(wrapper).append('<div>Description: <input type="text" name="product['+ x +'][description]" value=""/> '+
   |             'Qty: <input type="number" name="product[' + x + '][qty]" value=""/> ' +
   |             'Rate:  <input type="number" name="product[' + x + '][rate]" value=""/> ' +
-  |             '<a href="#" class="remove_field">Remove</a></div>'); //add input box
+  |             '<a href="#" class="remove_field">Remove</a></div><br>'); //add input box
   |           x++; //text box increment
   |       }
   |   });
@@ -49,6 +49,15 @@ block content
       input(type='text', name='partyCode', value='')
     br
     br
+    p
+      | GST Information
+    p
+      | CGST
+      input(type='text', name='cgst', value='')
+    p
+      | SGST
+      input(type='text', name='sgst', value='')
+    br
     br
     p
       | Product Details
@@ -62,4 +71,5 @@ block content
           input(type='number', name='product[0][qty]', value='')
           |       Rate:
           input(type='number', name='product[0][rate]', value='')
+        br
     input(type='submit', value='Submit')
